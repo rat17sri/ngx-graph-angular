@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { VERSION, MatSnackBar } from '@angular/material';
 import { NetworkService } from '../services/network.service';
-import swal from "sweetalert2";
 
 @Component({
   selector: "app-network-graph",
@@ -35,7 +34,6 @@ export class NetworkGraphComponent implements OnInit {
 
   Nodes = [];
   Edges = [];
-  Network_Graph = { Nodes: [], Edges: [] };
 
   version = VERSION;
 
@@ -110,7 +108,6 @@ export class NetworkGraphComponent implements OnInit {
       let keysToGet = [
         "entryNodeId",
         "Nodes",
-        "NetworkNodes",
         "originNodeOptions",
         "targetNodeOptions",
         "deleteNodeOptions"
@@ -118,25 +115,23 @@ export class NetworkGraphComponent implements OnInit {
       [
         this.entryNodeId,
         this.Nodes,
-        this.Network_Graph,
         this.originNodeOptions,
         this.targetNodeOptions,
         this.deleteNodeOptions
       ] = this.networkService.getSessionStorage(keysToGet);
     } else {
-      // this.networkService.getdappDetails("dummy").subscribe(result => {});
+      this.networkService.nodeDetails();
     }
 
     if (sessionStorage.getItem("Edges") != null) {
-      let keysToGet = ["entryProcessId", "Edges", "entryValue", "NetworkEdges"];
+      let keysToGet = ["entryProcessId", "Edges", "entryValue"];
       [
         this.entryProcessId,
         this.Edges,
         this.entryValue,
-        this.Network_Graph
       ] = this.networkService.getSessionStorage(keysToGet);
     } else {
-      // this.networkService.getdappDetails("dummy").subscribe(result => {});
+      this.networkService.linkDetails();
     }
 
     this.hierarchicalGraph.nodes = this.Nodes;
@@ -145,8 +140,6 @@ export class NetworkGraphComponent implements OnInit {
     if (!this.fitContainer) {
       this.applyDimensions();
     }
-
-    // this.networkService.getdappDetails("dummy").subscribe(result => {});
   }
 
   openSnackBar(message: string) {
@@ -161,10 +154,6 @@ export class NetworkGraphComponent implements OnInit {
         id: (this.entryNodeId + 1).toString(),
         label: this.nodeName
       });
-      this.Network_Graph.Nodes.push({
-        id: (this.entryNodeId + 1).toString(),
-        label: this.nodeName
-      });
       this.originNodeOptions.push(this.nodeName);
       this.targetNodeOptions.push(this.nodeName);
       this.deleteNodeOptions.push(this.nodeName);
@@ -172,7 +161,6 @@ export class NetworkGraphComponent implements OnInit {
       let keys = [
         "entryNodeId",
         "Nodes",
-        "NetworkNodes",
         "originNodeOptions",
         "targetNodeOptions",
         "deleteNodeOptions"
@@ -181,7 +169,6 @@ export class NetworkGraphComponent implements OnInit {
       let valuesToSet = [
         this.entryNodeId,
         this.Nodes,
-        this.Network_Graph,
         this.originNodeOptions,
         this.targetNodeOptions,
         this.deleteNodeOptions
@@ -206,17 +193,11 @@ export class NetworkGraphComponent implements OnInit {
         target: this.target_Id,
         label: "Process" + (this.entryProcessId + 1)
       });
-      this.Network_Graph.Edges.push({
-        id: this.entryValue,
-        source: this.source_Id,
-        target: this.target_Id,
-        label: "Process" + (this.entryProcessId + 1)
-      });
       this.entryProcessId = this.entryProcessId + 1;
       this.entryValue = this.networkService.nextChar(this.entryValue);
-      let keys = ["entryProcessId", "entryValue", "Edges", "NetworkEdges"];
+      let keys = ["entryProcessId", "entryValue", "Edges"];
       this.networkService.removeSessionStorage(keys);
-      let values = [this.entryProcessId, this.entryValue, this.Edges, this.Network_Graph];
+      let values = [this.entryProcessId, this.entryValue, this.Edges];
       this.networkService.setSessionStorage(keys, values);
     }
   }
@@ -228,9 +209,6 @@ export class NetworkGraphComponent implements OnInit {
     this.removeByAttr(this.Nodes, "label", this.deleteNodeName);
     this.removeByAttr(this.Edges, "source", this.node_Id);
     this.removeByAttr(this.Edges, "target", this.node_Id);
-    this.removeByAttr(this.Network_Graph.Nodes, "label", this.deleteNodeName);
-    this.removeByAttr(this.Network_Graph.Edges, "source", this.node_Id);
-    this.removeByAttr(this.Network_Graph.Edges, "target", this.node_Id);
     for (var i = 0; i < this.originNodeOptions.length; i++) {
       if (this.originNodeOptions[i] == this.deleteNodeName) {
         this.originNodeOptions.splice(i, 1);
@@ -245,8 +223,6 @@ export class NetworkGraphComponent implements OnInit {
       "originNodeOptions",
       "targetNodeOptions",
       "deleteNodeOptions",
-      "NetworkEdges",
-      "NetworkNodes"
     ];
     this.networkService.removeSessionStorage(keys);
     let values = [
@@ -255,8 +231,6 @@ export class NetworkGraphComponent implements OnInit {
       this.originNodeOptions,
       this.targetNodeOptions,
       this.deleteNodeOptions,
-      this.Network_Graph,
-      this.Network_Graph
     ];
     this.networkService.setSessionStorage(keys, values);
   }
@@ -355,38 +329,6 @@ export class NetworkGraphComponent implements OnInit {
     if (curveType === "Step Before") {
       this.curve = shape.curveStepBefore;
     }
-  }
-
-  onLegendLabelClick(entry) {
-    console.log("Legend clicked", entry);
-  }
-
-  toggleExpand(node) {
-    console.log("toggle expand", node);
-  }
-
-  select(data) {
-    console.log("Item clicked", data);
-  }
-
-  OnSaveDetails() {
-    this.dappBoxNetwork["networkGraph"] = this.Network_Graph;
-    this.dappBoxNetwork["entryNodeId"] = this.entryNodeId;
-    this.dappBoxNetwork["entryProcessId"] = this.entryProcessId;
-    this.dappBoxNetwork["entryValue"] = this.entryValue;
-    // this.networkService.dAppBoxDetails(this.dappBoxNetwork).subscribe(a => {
-    //   if (a == null) {
-    //     console.log("error in dappboxdetails");
-    //   } else {
-    //     console.log("dappboxNetwork saved");
-    //   }
-    // });
-    swal({
-      type: "success",
-      title: "dAppBox Network Saved !",
-      showConfirmButton: false,
-      timer: 1500
-    });
   }
 
 }

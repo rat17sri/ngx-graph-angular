@@ -1,155 +1,23 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { Observable } from "rxjs/Observable";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { catchError, map } from "rxjs/operators";
-import { EventEmitter } from "@angular/core";
+import { NodeData, LinkData, DataService } from '../services/data.service'
 
 @Injectable({
   providedIn: "root"
 })
 export class NetworkService {
-  private baseUrl: string = environment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private dataService: DataService) {}
 
-  dAppBoxDetails(param: object): Observable<any> {
-    console.log("dAppBoxNetwork Called");
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
+  nodeData : NodeData[];
+  linkData: LinkData[];
 
-    var body1 = `objtosave=${JSON.stringify(param)}`;
-
-    var url2 = `${this.baseUrl}dAppBoxDetails`;
-
-    return this.http.post(url2, body1, { headers: headers1 }).pipe(
-      map((result: any) => {
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
+  nodeDetails() {
+    this.nodeData = this.dataService.getNodeData();
   }
 
-  dappDetails(param: object): Observable<any> {
-    console.log("dappDetails Called");
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body1 = `objtosave=${JSON.stringify(param)}`;
-
-    var url2 = `${this.baseUrl}dappDetails`;
-
-    return this.http.post(url2, body1, { headers: headers1 }).pipe(
-      map((result: any) => {
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
-  }
-
-  UpdatedappDetails(param: object): Observable<any> {
-    console.log("UpdatedappDetails Called");
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body1 = `objtosave=${JSON.stringify(param)}`;
-
-    var url2 = `${this.baseUrl}UpdatedappDetails`;
-
-    return this.http.post(url2, body1, { headers: headers1 }).pipe(
-      map((result: any) => {
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
-  }
-
-  getdappDetails(id: any): Observable<any> {
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body = `id=${id}`;
-    var url = `${this.baseUrl}getdappDetails`;
-
-    return this.http.post(url, body, { headers: headers1 }).pipe(
-      map((result: any) => {
-        console.log("result from getdappdetails: ", result);
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
-  }
-
-  edgeDetails(param: object): Observable<any> {
-    console.log("edgeDetails Called");
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body1 = `objtosave=${JSON.stringify(param)}`;
-
-    var url2 = `${this.baseUrl}edgeDetails`;
-
-    return this.http.post(url2, body1, { headers: headers1 }).pipe(
-      map((result: any) => {
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
-  }
-
-  UpdateEdgeDetails(param: object): Observable<any> {
-    console.log("UpdateEdgeDetails Called");
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body1 = `objtosave=${JSON.stringify(param)}`;
-
-    var url2 = `${this.baseUrl}UpdateEdgeDetails`;
-
-    return this.http.post(url2, body1, { headers: headers1 }).pipe(
-      map((result: any) => {
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
-  }
-
-  getEdgeDetails(id: any): Observable<any> {
-    let headers1 = new HttpHeaders({
-      "Content-Type": "application/x-www-form-urlencoded"
-    });
-
-    var body = `id=${id}`;
-    var url = `${this.baseUrl}getEdgeDetails`;
-
-    return this.http.post(url, body, { headers: headers1 }).pipe(
-      map((result: any) => {
-        console.log("result from getEdgedetails: ", result);
-        return result;
-      }),
-      catchError(err => {
-        return err.json();
-      })
-    );
+  linkDetails() {
+    this.linkData = this.dataService.getLinkData();
   }
 
   //Start of Generating Ids
