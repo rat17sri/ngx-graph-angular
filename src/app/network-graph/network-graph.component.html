@@ -1,0 +1,92 @@
+<div class="graph-container">
+
+  <ngx-graph class="chart-container" [view]="view" [links]="hierarchicalGraph.links"
+    (legendLabelClick)="onLegendLabelClick($event)" [nodes]="hierarchicalGraph.nodes" [scheme]="colorScheme"
+    [orientation]="orientation" [curve]="curve" (select)="select($event)" [zoomSpeed]="zoomSpeed" [update$]="update$"
+    [zoomToFit$]="zoomToFit$" [autoZoom]="autoZoom">
+
+    <ng-template #defsTemplate>
+      <svg:marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+        <svg:path d="M0,-5L10,0L0,5" class="arrow-head" />
+      </svg:marker>
+    </ng-template>
+
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node" ngx-tooltip [tooltipPlacement]="'top'" [tooltipType]="'tooltip'" [tooltipTitle]="node.label">
+        <svg:rect [attr.width]="node.width" [attr.height]="node.height" [attr.fill]="node.options.color" />
+        <svg:text alignment-baseline="central" [attr.x]="10" [attr.y]="node.height / 2">
+          {{node.label}}
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge" (click)="arrowClick(link.label)">
+        <svg:path class="line" stroke-width="3" marker-end="url(#arrow)">
+        </svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath style="fill: #666;" [attr.href]="selectEdge" startOffset="60%">
+            Selected
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+
+  </ngx-graph>
+  
+</div>
+
+<div class="btn-container">
+
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="nodeName" name="nodeName" placeholder="dAppBox Name">
+  </mat-form-field>
+
+  <button [disabled]="!nodeName" mat-stroked-button color="primary" class="button" (click)="addNode()"
+    (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
+    Add dAppBox
+  </button>
+  <br /><br />
+
+  <mat-form-field>
+    <mat-label>Origin dAppBox</mat-label>
+    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="sourceNode">
+      <mat-option *ngFor="let folder of originNodeOptions" [value]="folder">
+        {{folder}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose origin dAppBox</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Target dAppBox</mat-label>
+    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="targetNode">
+      <mat-option *ngFor="let folder of targetNodeOptions" [value]="folder">
+        {{folder}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose target dAppBox</mat-error>
+  </mat-form-field>
+
+  <button [disabled]="!sourceNode || !targetNode" mat-stroked-button color="primary" class="button"
+    (click)="connectNode()" (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
+    Connect dAppBoxes
+  </button>
+  <br /><br />
+
+  <mat-form-field>
+    <mat-label>Delete dAppBox</mat-label>
+    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="deleteNodeName">
+      <mat-option *ngFor="let folder of deleteNodeOptions" [value]="folder">
+        {{folder}}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose dAppBox</mat-error>
+  </mat-form-field>
+
+  <button [disabled]="!deleteNodeName" mat-stroked-button color="primary" class="button" (click)="deleteNodeOptionss()"
+    (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
+    Delete dAppBox
+  </button>
+  <br /><br />
+</div>

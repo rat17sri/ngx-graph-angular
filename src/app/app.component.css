@@ -1,3 +1,14 @@
 p {
   font-family: Lato;
 }
+h1 { 
+    color: #7c795d; 
+    font-family: 'Trocchi', serif; 
+    font-size: 40px; 
+    font-weight: normal; 
+    line-height: 48px; 
+    margin: 0;
+    margin-bottom: 7px;
+    text-align: center;
+    background: #fff4a3
+ }
