@@ -194,6 +194,8 @@ export class NetworkGraphComponent implements OnInit {
       let values = [this.entryValue, this.Edges];
       this.networkService.setSessionStorage(keys, values);
     }
+    this.sourceNode = '';
+    this.targetNode = '';
   }
 
   deleteNode() {
