@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 
-export class NodeData {
+export interface NodeData {
   id: string;
   label: string;
 }
 
-export class LinkData {
+export interface LinkData {
   id: string;
   source: string;
   target: string;
@@ -13,52 +13,61 @@ export class LinkData {
 
 const nodeData: NodeData[] = [
   {
-    id: "first",
-    label: "A"
+    id: "1",
+    label: "Node A"
   },
   {
-    id: "second",
-    label: "B"
+    id: "2",
+    label: "Node B"
   },
   {
-    id: "c1",
-    label: "C1"
+    id: "3",
+    label: "Node C"
   },
   {
-    id: "c2",
-    label: "C2"
+    id: "4",
+    label: "Node D"
   },
   {
-    id: "d",
-    label: "D"
+    id: "5",
+    label: "Node E"
+  },
+  {
+    id: "6",
+    label: "Node F"
   }
 ];
 
 const linkData: LinkData[] = [
   {
-    id: "a",
-    source: "first",
-    target: "second"
+    id: "A",
+    source: "1",
+    target: "2"
   },
   {
-    id: "b",
-    source: "first",
-    target: "c1"
+    id: "B",
+    source: "1",
+    target: "3"
   },
   {
-    id: "d",
-    source: "first",
-    target: "c2"
+    id: "C",
+    source: "1",
+    target: "4"
   },
   {
-    id: "e",
-    source: "c1",
-    target: "d"
+    id: "D",
+    source: "1",
+    target: "5"
   },
   {
-    id: "f",
-    source: "c1",
-    target: "d"
+    id: "E",
+    source: "3",
+    target: "6"
+  },
+  {
+    id: "F",
+    source: "4",
+    target: "6"
   }
 ];
 

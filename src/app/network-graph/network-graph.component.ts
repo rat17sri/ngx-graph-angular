@@ -26,7 +26,6 @@ export class NetworkGraphComponent implements OnInit {
 
   entryValue = "A";
   entryNodeId = 1;
-  entryProcessId = 1;
   count = 1;
 
   Nodes = [];
@@ -98,7 +97,7 @@ export class NetworkGraphComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    
     if (sessionStorage.getItem("Nodes") !== null) {
       let keysToGet = [
         "entryNodeId",
@@ -111,18 +110,29 @@ export class NetworkGraphComponent implements OnInit {
         this.nodeOptions
       ] = this.networkService.getSessionStorage(keysToGet);
     } else {
-      this.networkService.nodeDetails();
+      let nodesDetails = this.networkService.nodeDetails();
+      nodesDetails.forEach(node => {
+        this.entryNodeId = Number(node.id);
+        this.nodeOptions.push(node.label);
+        this.Nodes.push(node);
+      });
     }
 
     if (sessionStorage.getItem("Edges") != null) {
-      let keysToGet = ["entryProcessId", "Edges", "entryValue"];
+      let keysToGet = [
+        "Edges",
+        "entryValue"
+      ];
       [
-        this.entryProcessId,
         this.Edges,
         this.entryValue,
       ] = this.networkService.getSessionStorage(keysToGet);
     } else {
-      this.networkService.linkDetails();
+      let linksDetails = this.networkService.linkDetails();
+      linksDetails.forEach(link => {
+        this.Edges.push(link);
+        this.entryValue = link.id;
+      });
     }
 
     this.hierarchicalGraph.nodes = this.Nodes;
@@ -173,17 +183,15 @@ export class NetworkGraphComponent implements OnInit {
     if (this.source_Id === this.target_Id) {
       this.openSnackBar("Same Node can not be connected");
     } else {
+      this.entryValue = this.networkService.nextChar(this.entryValue);
       this.Edges.push({
         id: this.entryValue,
         source: this.source_Id,
         target: this.target_Id,
-        label: "Process" + (this.entryProcessId + 1)
       });
-      this.entryProcessId = this.entryProcessId + 1;
-      this.entryValue = this.networkService.nextChar(this.entryValue);
-      let keys = ["entryProcessId", "entryValue", "Edges"];
+      let keys = ["entryValue", "Edges"];
       this.networkService.removeSessionStorage(keys);
-      let values = [this.entryProcessId, this.entryValue, this.Edges];
+      let values = [this.entryValue, this.Edges];
       this.networkService.setSessionStorage(keys, values);
     }
   }
@@ -204,7 +212,7 @@ export class NetworkGraphComponent implements OnInit {
     let keys = [
       "Nodes",
       "Edges",
-      "nodeOptions"
+      "nodeOptions",
     ];
     this.networkService.removeSessionStorage(keys);
     let values = [

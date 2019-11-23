@@ -13,11 +13,11 @@ export class NetworkService {
   linkData: LinkData[];
 
   nodeDetails() {
-    this.nodeData = this.dataService.getNodeData();
+    return this.dataService.getNodeData();
   }
 
   linkDetails() {
-    this.linkData = this.dataService.getLinkData();
+    return this.dataService.getLinkData();
   }
 
   //Start of Generating Ids

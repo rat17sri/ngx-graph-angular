@@ -50,22 +50,22 @@
 
   <mat-form-field>
     <mat-label>Origin Node</mat-label>
-    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="sourceNode">
+    <mat-select [(value)]="sourceNode">
+      <mat-option>None</mat-option>
       <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose origin Node</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Target Node</mat-label>
-    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="targetNode">
+    <mat-select [(value)]="targetNode">
+      <mat-option>None</mat-option>
       <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose target Node</mat-error>
   </mat-form-field>
 
   <button [disabled]="!sourceNode || !targetNode" mat-stroked-button color="primary" class="button" style="background-color: #ffd000; color: white; width:180px;"
@@ -76,12 +76,12 @@
 
   <mat-form-field>
     <mat-label>Delete Node</mat-label>
-    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="deleteNodeName">
+    <mat-select [(value)]="deleteNodeName">
+      <mat-option>None</mat-option>
       <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose Node</mat-error>
   </mat-form-field>
 
   <button [disabled]="!deleteNodeName" mat-stroked-button color="primary" class="button" (click)="deleteNode()"
