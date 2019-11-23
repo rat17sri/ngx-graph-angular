@@ -39,54 +39,54 @@
 <div class="btn-container">
 
   <mat-form-field>
-    <input matInput type="text" [(ngModel)]="nodeName" name="nodeName" placeholder="dAppBox Name">
+    <input matInput type="text" [(ngModel)]="nodeName" name="nodeName" placeholder="Node Name">
   </mat-form-field>
 
   <button [disabled]="!nodeName" mat-stroked-button color="primary" class="button" (click)="addNode()"
-    (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
-    Add dAppBox
+    style="background-color: #00B200;color: white; width:180px;" (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
+    Add Node
   </button>
   <br /><br />
 
   <mat-form-field>
-    <mat-label>Origin dAppBox</mat-label>
-    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="sourceNode">
-      <mat-option *ngFor="let folder of originNodeOptions" [value]="folder">
+    <mat-label>Origin Node</mat-label>
+    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="sourceNode">
+      <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose origin dAppBox</mat-error>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose origin Node</mat-error>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Target dAppBox</mat-label>
-    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="targetNode">
-      <mat-option *ngFor="let folder of targetNodeOptions" [value]="folder">
+    <mat-label>Target Node</mat-label>
+    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="targetNode">
+      <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose target dAppBox</mat-error>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose target Node</mat-error>
   </mat-form-field>
 
-  <button [disabled]="!sourceNode || !targetNode" mat-stroked-button color="primary" class="button"
+  <button [disabled]="!sourceNode || !targetNode" mat-stroked-button color="primary" class="button" style="background-color: #ffd000; color: white; width:180px;"
     (click)="connectNode()" (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
-    Connect dAppBoxes
+    Connect Nodes
   </button>
   <br /><br />
 
   <mat-form-field>
-    <mat-label>Delete dAppBox</mat-label>
-    <mat-select [formControl]="nodeOptionsControl" required [(ngModel)]="deleteNodeName">
-      <mat-option *ngFor="let folder of deleteNodeOptions" [value]="folder">
+    <mat-label>Delete Node</mat-label>
+    <mat-select [formControl]="nodeOptions.length > 0 && nodeOptionsControl" required [(ngModel)]="deleteNodeName">
+      <mat-option *ngFor="let folder of nodeOptions" [value]="folder">
         {{folder}}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose dAppBox</mat-error>
+    <mat-error *ngIf="nodeOptionsControl.hasError('required')">Please choose Node</mat-error>
   </mat-form-field>
 
-  <button [disabled]="!deleteNodeName" mat-stroked-button color="primary" class="button" (click)="deleteNodeOptionss()"
-    (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
-    Delete dAppBox
+  <button [disabled]="!deleteNodeName" mat-stroked-button color="primary" class="button" (click)="deleteNode()"
+    style="background-color: #C40233;color: white; width:180px;" (click)="update$.next(true)" (click)="zoomToFit$.next(true)" (click)="center$.next(true)">
+    Delete Node
   </button>
   <br /><br />
 </div>

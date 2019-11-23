@@ -3,7 +3,7 @@ import * as shape from 'd3-shape';
 import { colorSets } from './color-sets';
 import { Subject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
-import { VERSION, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { NetworkService } from '../services/network.service';
 
 @Component({
@@ -21,11 +21,8 @@ export class NetworkGraphComponent implements OnInit {
   source_Id: any;
   target_Id: any;
   node_Id: any;
-  originNodeOptions = [];
-  targetNodeOptions = [];
-  deleteNodeOptions = [];
+  nodeOptions = [];
   nodeOptionsControl = new FormControl("", [Validators.required]);
-  dappBoxNetwork = {};
 
   entryValue = "A";
   entryNodeId = 1;
@@ -34,8 +31,6 @@ export class NetworkGraphComponent implements OnInit {
 
   Nodes = [];
   Edges = [];
-
-  version = VERSION;
 
   hierarchicalGraph = { nodes: [], links: [] };
 
@@ -108,16 +103,12 @@ export class NetworkGraphComponent implements OnInit {
       let keysToGet = [
         "entryNodeId",
         "Nodes",
-        "originNodeOptions",
-        "targetNodeOptions",
-        "deleteNodeOptions"
+        "nodeOptions"
       ];
       [
         this.entryNodeId,
         this.Nodes,
-        this.originNodeOptions,
-        this.targetNodeOptions,
-        this.deleteNodeOptions
+        this.nodeOptions
       ] = this.networkService.getSessionStorage(keysToGet);
     } else {
       this.networkService.nodeDetails();
@@ -154,27 +145,22 @@ export class NetworkGraphComponent implements OnInit {
         id: (this.entryNodeId + 1).toString(),
         label: this.nodeName
       });
-      this.originNodeOptions.push(this.nodeName);
-      this.targetNodeOptions.push(this.nodeName);
-      this.deleteNodeOptions.push(this.nodeName);
+      this.nodeOptions.push(this.nodeName);
       this.entryNodeId = this.entryNodeId + 1;
       let keys = [
         "entryNodeId",
         "Nodes",
-        "originNodeOptions",
-        "targetNodeOptions",
-        "deleteNodeOptions"
+        "nodeOptions"
       ];
       this.networkService.removeSessionStorage(keys);
       let valuesToSet = [
         this.entryNodeId,
         this.Nodes,
-        this.originNodeOptions,
-        this.targetNodeOptions,
-        this.deleteNodeOptions
+        this.nodeOptions
       ];
       this.networkService.setSessionStorage(keys, valuesToSet);
     }
+    this.nodeName = '';
   }
 
   connectNode() {
@@ -185,7 +171,7 @@ export class NetworkGraphComponent implements OnInit {
       this.Nodes.findIndex(x => x.label == this.targetNode)
     ].id;
     if (this.source_Id === this.target_Id) {
-      this.openSnackBar("Same dAppBox can not be connected");
+      this.openSnackBar("Same Node can not be connected");
     } else {
       this.Edges.push({
         id: this.entryValue,
@@ -202,35 +188,29 @@ export class NetworkGraphComponent implements OnInit {
     }
   }
 
-  deleteNodeOptionss() {
+  deleteNode() {
     this.node_Id = this.Nodes[
       this.Nodes.findIndex(x => x.label == this.deleteNodeName)
     ].id;
     this.removeByAttr(this.Nodes, "label", this.deleteNodeName);
     this.removeByAttr(this.Edges, "source", this.node_Id);
     this.removeByAttr(this.Edges, "target", this.node_Id);
-    for (var i = 0; i < this.originNodeOptions.length; i++) {
-      if (this.originNodeOptions[i] == this.deleteNodeName) {
-        this.originNodeOptions.splice(i, 1);
-        this.targetNodeOptions.splice(i, 1);
-        this.deleteNodeOptions.splice(i, 1);
+    for (var i = 0; i < this.nodeOptions.length; i++) {
+      if (this.nodeOptions[i] == this.deleteNodeName) {
+        this.nodeOptions.splice(i, 1);
         i--;
       }
     }
     let keys = [
       "Nodes",
       "Edges",
-      "originNodeOptions",
-      "targetNodeOptions",
-      "deleteNodeOptions",
+      "nodeOptions"
     ];
     this.networkService.removeSessionStorage(keys);
     let values = [
       this.Nodes,
       this.Edges,
-      this.originNodeOptions,
-      this.targetNodeOptions,
-      this.deleteNodeOptions,
+      this.nodeOptions,
     ];
     this.networkService.setSessionStorage(keys, values);
   }
