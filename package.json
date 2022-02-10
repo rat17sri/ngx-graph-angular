@@ -45,7 +45,7 @@
     "ngx-bootstrap": "^3.3.0",
     "ngx-image-cropper": "^1.5.1",
     "ngx-spinner": "^6.1.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "npm": "^6.13.1",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
