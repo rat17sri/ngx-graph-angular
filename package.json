@@ -46,7 +46,7 @@
     "ngx-image-cropper": "^1.5.1",
     "ngx-spinner": "^6.1.2",
     "node-sass": "^4.13.0",
-    "npm": "^6.13.1",
+    "npm": "^9.6.6",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
     "survey-angular": "^1.1.20",
@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.10.7",
-    "@angular/cli": "^7.3.9",
+    "@angular/cli": "^16.0.0",
     "@angular/compiler-cli": "^7.2.15",
     "@angular/language-service": "^7.2.15",
     "@types/jasmine": "^2.8.16",
