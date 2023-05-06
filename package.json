@@ -38,7 +38,7 @@
     "email-validator": "^2.0.4",
     "hammerjs": "^2.0.8",
     "hover.css": "^2.3.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng-connection-service": "^1.0.4",
     "ng2-file-upload": "^1.4.0",
     "ngx-avatar": "^3.7.0",
